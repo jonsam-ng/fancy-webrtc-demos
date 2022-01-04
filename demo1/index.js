@@ -1,6 +1,3 @@
-const sleep = (delay) =>
-  new Promise((resolve) => setTimeout(() => resolve(true), delay));
-
 ((window) => {
   const { document, navigator } = window;
   // find elements
@@ -103,7 +100,7 @@ const sleep = (delay) =>
 
       connections.push(localConnection, remoteConnection);
 
-      // listen icon events
+      // listen ice events
       connections.forEach((connection) => {
         connection.onicecandidate = onicecandidate;
         connection.oniceconnectionstatechange = oniceconnectionstatechange;
