@@ -25,8 +25,8 @@
   function start() {
     // init connections
     const localConnection = new RTCPeerConnection();
-    // init data chanel before ice negotiation
-    // @note create channel
+    // init data chanel
+    // @note create channel before ice negotiation
     channel = localConnection.createDataChannel("sendChannel");
     fileChannel = localConnection.createDataChannel("fileChannel");
 
@@ -119,11 +119,9 @@
     const [localConnection, remoteConnection] = connections;
     remoteConnection.ondatachannel = (event) => {
       const { channel } = event;
-      // channel.binaryType = "arraybuffer";
       if (!channel) return;
       channel.onmessage = (e) => {
         const { data } = e;
-        console.log({ data }, typeof data);
         typeof data === "string"
           ? (filename = data)
           : (file = new Blob([data]));
@@ -135,6 +133,7 @@
     downloadFileButton.disabled = false;
     const file = sendFile.files?.[0];
     if (!file) console.error("Not select file");
+    // @note large arrayBuffer makes browser close data channel
     const buffer = await file.arrayBuffer();
     fileChannel.send(buffer);
     fileChannel.send(file.name);
