@@ -9,6 +9,7 @@
   // connections manager, keep first local connection
   const connections = [];
   let channel;
+  let fileChannel;
 
   function onicecandidate(event) {
     const { candidate, target } = event;
@@ -26,7 +27,9 @@
     const localConnection = new RTCPeerConnection();
     // init data chanel before ice negotiation
     // @note create channel
-    channel = localConnection.createDataChannel("seedChannel");
+    channel = localConnection.createDataChannel("sendChannel");
+    fileChannel = localConnection.createDataChannel("fileChannel");
+
     const remoteConnection = new RTCPeerConnection();
 
     connections.push(localConnection, remoteConnection);
@@ -92,4 +95,59 @@
   startButton.onclick = start;
   sendButton.onclick = send;
   closeButton.onclick = stop;
+
+  // ========== Send FIle ========== //
+  // find elements
+  const sendFile = document.querySelector("#sendFile");
+  const sendFileButton = document.querySelector("#sendFileButton");
+  const startFileButton = document.querySelector("#startFileButton");
+  const downloadFileButton = document.querySelector("#downloadFile");
+
+  // binding events
+  startFileButton.onclick = startFile;
+  sendFileButton.onclick = sendFileFn;
+  downloadFileButton.onclick = downloadFile;
+  startFileButton.disabled = false;
+
+  let file;
+  let filename;
+
+  function startFile() {
+    startFileButton.disabled = true;
+    sendFileButton.disabled = false;
+    if (!connections[0]) start();
+    const [localConnection, remoteConnection] = connections;
+    remoteConnection.ondatachannel = (event) => {
+      const { channel } = event;
+      // channel.binaryType = "arraybuffer";
+      if (!channel) return;
+      channel.onmessage = (e) => {
+        const { data } = e;
+        console.log({ data }, typeof data);
+        typeof data === "string"
+          ? (filename = data)
+          : (file = new Blob([data]));
+      };
+    };
+  }
+
+  async function sendFileFn() {
+    downloadFileButton.disabled = false;
+    const file = sendFile.files?.[0];
+    if (!file) console.error("Not select file");
+    const buffer = await file.arrayBuffer();
+    fileChannel.send(buffer);
+    fileChannel.send(file.name);
+  }
+
+  function downloadFile() {
+    if (!file) return;
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(file);
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+    link.remove;
+  }
 })(window);

@@ -18,6 +18,8 @@
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+
+    <p>Send Text</p>
     <textarea id="dataChannelSend" disabled placeholder="Press Start, enter some text, then press Send."></textarea>
     <textarea id="dataChannelReceive" disabled></textarea>
 
@@ -25,6 +27,16 @@
       <button id="startButton" disabled>Start</button>
       <button id="sendButton" disabled>Send</button>
       <button id="closeButton" disabled>Stop</button>
+    </div>
+
+    <hr />
+
+    <div>
+      <p>Send File: : Only small file &lt; 128K</p>
+      <input type='file' id="sendFile" placeholder="select file"></input>
+      <button id="startFileButton" disabled>Start</button>
+      <button id="sendFileButton" disabled>Send</button>
+      <button id="downloadFile" disabled>download</button>
     </div>
 
     <script src="./index.js" async defer></script>
