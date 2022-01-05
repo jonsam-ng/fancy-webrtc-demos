@@ -18,13 +18,13 @@
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <video id="localVideo" autoplay></video>
-    <video id="remoteVideo" autoplay></video>
+    <textarea id="dataChannelSend" disabled placeholder="Press Start, enter some text, then press Send."></textarea>
+    <textarea id="dataChannelReceive" disabled></textarea>
 
-    <div>
-      <button id="startButton">Start</button>
-      <button id="callButton">Call</button>
-      <button id="hangupButton">Hang Up</button>
+    <div id="buttons">
+      <button id="startButton" disabled>Start</button>
+      <button id="sendButton" disabled>Send</button>
+      <button id="closeButton" disabled>Stop</button>
     </div>
 
     <script src="./index.js" async defer></script>
