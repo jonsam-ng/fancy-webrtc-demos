@@ -11,3 +11,5 @@
 ## 使用 RTCDataChannel 传输文件（Chunks）
 
 - [示例](https://jonsam-ng.github.io/fancy-webrtc/demo3/index.html)
+
+## 不需要 delay server 的简易聊天室
