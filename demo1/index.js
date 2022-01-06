@@ -6,6 +6,8 @@
   const startButton = document.getElementById("startButton");
   const callButton = document.getElementById("callButton");
   const hangupButton = document.getElementById("hangupButton");
+  const snapButton = document.getElementById("snapButton");
+  const canvasArea = document.getElementById("canvas");
   // constraints for media
   const constraints = { video: true };
   // connections manager, keep first local connection
@@ -133,8 +135,16 @@
     localStream = null;
   }
 
+  function snapshot() {
+    canvasArea.width = localVideoEle.videoWidth;
+    canvasArea.height = localVideoEle.videoHeight;
+    const ctx = canvasArea.getContext("2d");
+    ctx.drawImage(localVideoEle, 0, 0, canvasArea.width, canvasArea.height);
+  }
+
   // binding actions
   startButton.onclick = start;
   callButton.onclick = call;
   hangupButton.onclick = hangup;
+  snapButton.onclick = snapshot;
 })(window);
